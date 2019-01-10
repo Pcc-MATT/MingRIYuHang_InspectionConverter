@@ -383,6 +383,8 @@ namespace MingRIYuHang_InspectionConverter
             try
             {
                 showMsg("导出开始");
+                inspectionPlanPath = textBox1.Text;
+                inspectionFileAnalyse.inspectionPath = inspectionPlanPath + @"\inspection";
                 inspectionFileAnalyse.readInspectionFile();//读取原始测量程序
                 //导出点
                 if (this.dataGridView1.SelectedRows.Count != 0)
@@ -421,17 +423,17 @@ namespace MingRIYuHang_InspectionConverter
                     inputPoint.pointList = outputPointList;
                     if (textBox1.Text != "" && textBox2.Text != "")
                     {
-                        inspectionPlanPath = textBox1.Text;
-                        if (creatNewInspectionPlanFlag)
-                        {
-                            inspectionFileAnalyse.inspectionPath = inspectionPlanPath + "\\" + newInspectionPlanName + @"\inspection";
-                        }
-                        else
-                        {
-                            inspectionFileAnalyse.inspectionPath = inspectionPlanPath + @"\inspection";
-                        }
+                        //inspectionPlanPath = textBox1.Text;
+                        ////if (creatNewInspectionPlanFlag)
+                        ////{
+                        ////    inspectionFileAnalyse.inspectionPath = inspectionPlanPath + "\\" + newInspectionPlanName + @"\inspection";
+                        ////}
+                        ////else
+                        ////{
+                        //    inspectionFileAnalyse.inspectionPath = inspectionPlanPath + @"\inspection";
+                        ////}
                         inspectionFileAnalyse.insertData2InspectionFile(inputPoint.pointList, creatNewInspectionPlanFlag,pointStartName);
-                        creatNewInspectionPlanFlag = false;
+                        //creatNewInspectionPlanFlag = false;
                     }
                     showMsg("导出点数据完成");
                 }
@@ -480,21 +482,21 @@ namespace MingRIYuHang_InspectionConverter
                     inputCircle.circleList = outputCircleList;
                     if (textBox1.Text != "" && textBox3.Text != "")
                     {
-                        inspectionPlanPath = textBox1.Text;
-                        if (creatNewInspectionPlanFlag)
-                        {
-                            inspectionFileAnalyse.inspectionPath = inspectionPlanPath + "\\" + newInspectionPlanName + @"\inspection";
-                        }
-                        else
-                        {
-                            inspectionFileAnalyse.inspectionPath = inspectionPlanPath + @"\inspection";
-                        }
+                        //inspectionPlanPath = textBox1.Text;
+                        ////if (creatNewInspectionPlanFlag)
+                        ////{
+                        ////    inspectionFileAnalyse.inspectionPath = inspectionPlanPath + "\\" + newInspectionPlanName + @"\inspection";
+                        ////}
+                        ////else
+                        ////{
+                        //    inspectionFileAnalyse.inspectionPath = inspectionPlanPath + @"\inspection";
+                        ////}
                         inspectionFileAnalyse.insertData2InspectionFile(inputCircle.circleList, creatNewInspectionPlanFlag,circleStartName);
-                        creatNewInspectionPlanFlag = false;
+                        
                     }
                     showMsg("导出圆数据完成");
                 }
-
+                creatNewInspectionPlanFlag = false;
                 inspectionFileAnalyse.write2InspectionFile();//写入到原始测量程序
 
                 MessageBox.Show("导出完成！");
@@ -530,6 +532,8 @@ namespace MingRIYuHang_InspectionConverter
                     changeInspectionName(textBox1.Text + "\\" + newInspectionPlanName + "\\username", newInspectionPlanName);
                     showMsg("更改目标路径下文件名称完成");
                     creatNewInspectionPlanFlag = true;
+                    textBox1.Text += @"\" +textBox5.Text.Trim();
+                    MessageBox.Show("创建新的测量程序完成，等待导入...");
                 }
                 else
                 {

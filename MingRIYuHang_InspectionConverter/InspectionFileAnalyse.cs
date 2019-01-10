@@ -148,12 +148,13 @@ namespace MingRIYuHang_InspectionConverter
             //第一处插入的信息
             int controlFeatureIndex = orignalInspectionPlanContent.FindIndex(n => n == "#controlFeatures: ");
             int planeFeatureIndex = orignalInspectionPlanContent.FindIndex(n => n == "#('Plane1' ' ->' ");
-            if (planeFeatureIndex != -1)
+            if (!creatNewInspectionFlag||(creatNewInspectionFlag&& planeFeatureIndex != -1))//插入已有测量程序，包括已经创建点的程序
             {
-                string sss = orignalInspectionPlanContent[controlFeatureIndex - 1];
-                //orignalInspectionPlanContent[planeFeatureIndex - 1] = orignalInspectionPlanContent[planeFeatureIndex - 1].Remove(orignalInspectionPlanContent[planeFeatureIndex - 1].LastIndexOf(')') - 1, 2);//去掉双括号
-                if (!creatNewInspectionFlag)
+                if (controlFeatureIndex != -1)
                 {
+                    orignalInspectionPlanContent[controlFeatureIndex - 1] = orignalInspectionPlanContent[controlFeatureIndex - 1].Remove(orignalInspectionPlanContent[controlFeatureIndex - 1].LastIndexOf(')') - 1, 2);//去掉双括号
+                    //if (!creatNewInspectionFlag)
+                    //{
                     //获取已有inspection里的圆名字的序号
                     List<string> circleNameList = new List<string>();
                     circleNameList = orignalInspectionPlanContent.FindAll(n => n.Contains("#identifier: '" + circleStartName) && n.Substring(15, 1) != "l");
@@ -187,39 +188,67 @@ namespace MingRIYuHang_InspectionConverter
                     {
                         cylinderIndex++;
                         oldCircleNameNumber++;
-                        pt.name = circleStartName +"-"+ oldCircleNameNumber;
+                        pt.name = circleStartName + "-" + oldCircleNameNumber;
                         circleInterface.combineCircleModel(pt, "Cylinder" + cylinderIndex);
                     }
+                    //}
+                    //else
+                    //{
+                    //    foreach (Circle pt in circleList)
+                    //    {
+                    //        cylinderIndex++;
+                    //        circleInterface.combineCircleModel(pt, "Cylinder" + cylinderIndex);
+                    //    }
+                    //}
+                    circleFirstContent = circleInterface.pointModelFirstContentList;
+                    circleFirstContent[circleFirstContent.Count() - 1] = circleFirstContent[circleFirstContent.Count() - 1].Insert(circleFirstContent[circleFirstContent.Count() - 1].IndexOf(')'),"))");
+                    orignalInspectionPlanContent.InsertRange(controlFeatureIndex, circleFirstContent);
+                    //第二处 插入的信息
+                    circleSecondContent = circleInterface.pointModelSecondContentList;
+                    circleSecondContent[circleSecondContent.Count() - 1] = circleSecondContent[circleSecondContent.Count() - 1].Insert(circleSecondContent[circleSecondContent.Count() - 1].Count() - 2, "))");
+                    //if (!creatNewInspectionFlag)
+                    //{
+                        int defaultTechnologyIndex = orignalInspectionPlanContent.FindLastIndex(n => n.Contains("#defaultTechnology: '"));//orignalInspectionPlanContent.FindIndex(n => n.Contains("#defaultTechnology: '***')))"))
+                        orignalInspectionPlanContent[defaultTechnologyIndex] = orignalInspectionPlanContent[defaultTechnologyIndex].Remove(orignalInspectionPlanContent[defaultTechnologyIndex].Count() - 4, 2);//移除双括号
+                        orignalInspectionPlanContent.InsertRange(defaultTechnologyIndex + 1, circleSecondContent);
+                    //}
+                    //else
+                    //{
+                    //    int safetyGroupIndex = orignalInspectionPlanContent.FindIndex(n => n.Contains("#safetyGroups: "));//#safetyGroups:
+                    //    orignalInspectionPlanContent[safetyGroupIndex - 1] = orignalInspectionPlanContent[safetyGroupIndex - 1].Remove(orignalInspectionPlanContent[safetyGroupIndex - 1].Count() - 3, 3);//移除safetyGroup上一句的双括号
+                    //    pointSecondContent.RemoveAt(0);
+                    //    pointSecondContent.Add("#defaultTechnology: '***'))) ");
+                    //    orignalInspectionPlanContent.InsertRange(safetyGroupIndex, pointSecondContent);
+                    //}
                 }
-                else
+            }
+            else
+            {
+                //新测量程序
+                if (controlFeatureIndex != -1)
                 {
+                    //第一处 插入信息
+                    orignalInspectionPlanContent[controlFeatureIndex - 1] = orignalInspectionPlanContent[controlFeatureIndex - 1].Remove(orignalInspectionPlanContent[controlFeatureIndex - 1].LastIndexOf(')') - 1, 2);//去掉双括号
                     foreach (Circle pt in circleList)
                     {
                         cylinderIndex++;
+                        oldCircleNameNumber++;
+                        pt.name = circleStartName + "-" + oldCircleNameNumber;
                         circleInterface.combineCircleModel(pt, "Cylinder" + cylinderIndex);
                     }
-                }
-                circleFirstContent = circleInterface.pointModelFirstContentList;
-                // circleFirstContent[circleFirstContent.Count() - 1] = circleFirstContent[circleFirstContent.Count() - 1] + "))";
-                orignalInspectionPlanContent.InsertRange(planeFeatureIndex, circleFirstContent);
-                //第二处 插入的信息
-                circleSecondContent = circleInterface.pointModelSecondContentList;
-                circleSecondContent[circleSecondContent.Count() - 1] = circleSecondContent[circleSecondContent.Count()-1].Insert(circleSecondContent[circleSecondContent.Count() - 1].Count()-2,"))");
-                if (!creatNewInspectionFlag)
-                {
-                    int defaultTechnologyIndex = orignalInspectionPlanContent.FindLastIndex(n => n.Contains("#defaultTechnology: '"));//orignalInspectionPlanContent.FindIndex(n => n.Contains("#defaultTechnology: '***')))"))
-                    orignalInspectionPlanContent[defaultTechnologyIndex] = orignalInspectionPlanContent[defaultTechnologyIndex].Remove(orignalInspectionPlanContent[defaultTechnologyIndex].Count() - 4, 2);//移除双括号
-                    orignalInspectionPlanContent.InsertRange(defaultTechnologyIndex+1, circleSecondContent);
-                }
-                else
-                {
+                    circleFirstContent = circleInterface.pointModelFirstContentList;
+                    circleFirstContent[circleFirstContent.Count() - 1] = circleFirstContent[circleFirstContent.Count() - 1].Insert(circleFirstContent[circleFirstContent.Count() - 1].IndexOf(')'),"))");
+                    orignalInspectionPlanContent.InsertRange(controlFeatureIndex, circleFirstContent);
+
+                    //第二处 插入信息
+                    circleSecondContent = circleInterface.pointModelSecondContentList;
                     int safetyGroupIndex = orignalInspectionPlanContent.FindIndex(n => n.Contains("#safetyGroups: "));//#safetyGroups:
                     orignalInspectionPlanContent[safetyGroupIndex - 1] = orignalInspectionPlanContent[safetyGroupIndex - 1].Remove(orignalInspectionPlanContent[safetyGroupIndex - 1].Count() - 3, 3);//移除safetyGroup上一句的双括号
-                    pointSecondContent.RemoveAt(0);
-                    pointSecondContent.Add("#defaultTechnology: '***'))) ");
-                    orignalInspectionPlanContent.InsertRange(safetyGroupIndex, pointSecondContent);
+                    circleSecondContent[circleSecondContent.Count() - 1] = circleSecondContent[circleSecondContent.Count() - 1].Insert(circleSecondContent[circleSecondContent.Count() - 1].IndexOf(')'), "))");
+                    orignalInspectionPlanContent.InsertRange(safetyGroupIndex, circleSecondContent);
                 }
             }
+            
         }
     }
 }
