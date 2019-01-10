@@ -107,6 +107,7 @@ namespace MingRIYuHang_InspectionConverter
                 return null;
             }  
         }
+        //读取圆文件信息
         public InputCircle readInputCircleFile(string pointFilePath)
         {
             try
@@ -141,6 +142,7 @@ namespace MingRIYuHang_InspectionConverter
                     }
                     else
                     {
+
                         diameter = Convert.ToDouble(strList[6]);
                     }
                     inputCircle.circleList.Add(new Circle
@@ -152,7 +154,7 @@ namespace MingRIYuHang_InspectionConverter
                             J = Convert.ToDouble(strList[4]),
                             K = Convert.ToDouble(strList[5]),
                             diameter = diameter,
-                           type = "innerCircle"
+                            type = "innerCircle"
                         });             
                 }
                 showMsg("读取圆数据文件 " + pointFilePath + " 完成");
@@ -381,6 +383,7 @@ namespace MingRIYuHang_InspectionConverter
             try
             {
                 showMsg("导出开始");
+                inspectionFileAnalyse.readInspectionFile();//读取原始测量程序
                 //导出点
                 if (this.dataGridView1.SelectedRows.Count != 0)
                 {
@@ -427,7 +430,7 @@ namespace MingRIYuHang_InspectionConverter
                         {
                             inspectionFileAnalyse.inspectionPath = inspectionPlanPath + @"\inspection";
                         }
-                        inspectionFileAnalyse.insertData2InspectionFile(inputPoint.pointList, creatNewInspectionPlanFlag);
+                        inspectionFileAnalyse.insertData2InspectionFile(inputPoint.pointList, creatNewInspectionPlanFlag,pointStartName);
                         creatNewInspectionPlanFlag = false;
                     }
                     showMsg("导出点数据完成");
@@ -454,11 +457,11 @@ namespace MingRIYuHang_InspectionConverter
                             string type = "";
                             if ((bool)dataGridView2.Rows[i].Cells[9].EditedFormattedValue == false)
                             {
-                                type = "内";
+                                type = "innerCircle";
                             }
                             else
                             {
-                                type = "外";
+                                type = "outterCircle";
                             }
                             outputCircleList.Add(new Circle
                             {
@@ -486,14 +489,14 @@ namespace MingRIYuHang_InspectionConverter
                         {
                             inspectionFileAnalyse.inspectionPath = inspectionPlanPath + @"\inspection";
                         }
-                        inspectionFileAnalyse.insertData2InspectionFile(inputPoint.pointList, creatNewInspectionPlanFlag);
+                        inspectionFileAnalyse.insertData2InspectionFile(inputCircle.circleList, creatNewInspectionPlanFlag,circleStartName);
                         creatNewInspectionPlanFlag = false;
                     }
                     showMsg("导出圆数据完成");
                 }
-              
 
-                
+                inspectionFileAnalyse.write2InspectionFile();//写入到原始测量程序
+
                 MessageBox.Show("导出完成！");
             }catch(Exception ex)
             {
