@@ -84,6 +84,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LogViewer.resx">
+      <DependentUpon>LogViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NewInspectionPlan.resx">
       <DependentUpon>NewInspectionPlan.cs</DependentUpon>
     </EmbeddedResource>

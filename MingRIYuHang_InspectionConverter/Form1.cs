@@ -660,5 +660,11 @@ namespace MingRIYuHang_InspectionConverter
             }
 
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            LogViewer logViewer = new LogViewer();
+            logViewer.ShowDialog();
+        }
     }
 }
