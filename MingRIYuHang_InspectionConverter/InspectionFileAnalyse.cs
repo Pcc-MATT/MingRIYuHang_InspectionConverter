@@ -59,6 +59,7 @@ namespace MingRIYuHang_InspectionConverter
             pointInterface = new PointInterface();
             int identifierNumber = 0;
             int oldPointNumber = 0;
+            int firstPlanIndex = 0;
             //第一处插入点的信息
             int controlFeatureIndex = orignalInspectionPlanContent.FindIndex(n => n == "#controlFeatures: ");
             if (controlFeatureIndex != -1)
@@ -87,14 +88,24 @@ namespace MingRIYuHang_InspectionConverter
                     //获取已有inspection里plane的序号
                     List<string> planeTemp = new List<string>();
                     planeTemp = orignalInspectionPlanContent.FindAll(n => n.Contains("#('Plane"));
-                    Regex re1 = new Regex("(?<=\').*?(?=\')", RegexOptions.None);
-                    MatchCollection mc1 = re1.Matches(planeTemp[planeTemp.Count() - 1]);
-                    foreach (Match ma1 in mc1)
+                    if (planeTemp.Count() == 0)
                     {
-                        string ss = ma1.Value.ToString();
-                        identifierNumber = int.Parse(System.Text.RegularExpressions.Regex.Replace(ss, @"[^0-9]+", ""));
-                        break;
+                        identifierNumber = 1;
+                        firstPlanIndex = 0;
                     }
+                    else
+                    {
+                        firstPlanIndex = 1;
+                        Regex re1 = new Regex("(?<=\').*?(?=\')", RegexOptions.None);
+                        MatchCollection mc1 = re1.Matches(planeTemp[planeTemp.Count() - 1]);
+                        foreach (Match ma1 in mc1)
+                        {
+                            string ss = ma1.Value.ToString();
+                            identifierNumber = int.Parse(System.Text.RegularExpressions.Regex.Replace(ss, @"[^0-9]+", ""));
+                            break;
+                        }
+                    }
+                   
                     //identifierNumber = int.Parse(planeTemp[planeTemp.Count() - 1].Substring(planeTemp[planeTemp.Count() - 1].IndexOf('e') + 1, 1));
                     foreach (Point pt in pointList)
                     {
@@ -107,6 +118,7 @@ namespace MingRIYuHang_InspectionConverter
                 }
                 else
                 {
+                    firstPlanIndex = 1;
                     foreach (Point pt in pointList)
                     {
                         identifierNumber++;
@@ -118,7 +130,7 @@ namespace MingRIYuHang_InspectionConverter
                 orignalInspectionPlanContent.InsertRange(controlFeatureIndex, pointFirstContent);
                 //第二处 插入点的信息
                 pointSecondContent = pointInterface.pointModelSecondContentList;
-                if (!creatNewInspectionFlag)
+                if (!creatNewInspectionFlag && firstPlanIndex ==1)
                 {
                     int defaultTechnologyIndex = orignalInspectionPlanContent.FindLastIndex(n => n.Contains("#defaultTechnology: '"));//orignalInspectionPlanContent.FindIndex(n => n.Contains("#defaultTechnology: '***')))"))
                     orignalInspectionPlanContent.InsertRange(defaultTechnologyIndex, pointSecondContent);
@@ -175,14 +187,22 @@ namespace MingRIYuHang_InspectionConverter
                     //获取已有inspection里圆cyclinder的序号
                     List<string> planeTemp = new List<string>();
                     planeTemp = orignalInspectionPlanContent.FindAll(n => n.Contains("#('Cylinder"));
-                    Regex re1 = new Regex("(?<=\').*?(?=\')", RegexOptions.None);
-                    MatchCollection mc1 = re1.Matches(planeTemp[planeTemp.Count() - 1]);
-                    foreach (Match ma1 in mc1)
+                    if (planeTemp.Count() == 0)
                     {
-                        string ss = ma1.Value.ToString();
-                        cylinderIndex = int.Parse(System.Text.RegularExpressions.Regex.Replace(ss, @"[^0-9]+", ""));
-                        break;
+                        cylinderIndex = 1;
                     }
+                    else
+                    {
+                        Regex re1 = new Regex("(?<=\').*?(?=\')", RegexOptions.None);
+                        MatchCollection mc1 = re1.Matches(planeTemp[planeTemp.Count() - 1]);
+                        foreach (Match ma1 in mc1)
+                        {
+                            string ss = ma1.Value.ToString();
+                            cylinderIndex = int.Parse(System.Text.RegularExpressions.Regex.Replace(ss, @"[^0-9]+", ""));
+                            break;
+                        }
+                    }
+                    
                     //identifierNumber = int.Parse(planeTemp[planeTemp.Count() - 1].Substring(planeTemp[planeTemp.Count() - 1].IndexOf('e') + 1, 1));
                     foreach (Circle pt in circleList)
                     {

@@ -75,6 +75,7 @@ namespace MingRIYuHang_InspectionConverter
                 for (int i = 1; i < pointFile.Count(); i++)
                 {
                     string str;
+                    pointFile[i] = pointFile[i].Trim();
                     str = new System.Text.RegularExpressions.Regex("[\\s]+").Replace(pointFile[i], " ");
                     string[] strList = str.Split(' ');
                     pts.Add(new Point
@@ -131,6 +132,7 @@ namespace MingRIYuHang_InspectionConverter
                 for (int i = 1; i < pointFile.Count(); i++)
                 {
                     string str;
+                    pointFile[i] = pointFile[i].Trim();
                     str = new System.Text.RegularExpressions.Regex("[\\s]+").Replace(pointFile[i], " ");
                     string[] strList = str.Split(' ');
                     //if(circleDataList[0].pointList.FindAll(n=>n.pointNo== int.Parse(strList[1])).Count == 0)//不含有相同的点序号

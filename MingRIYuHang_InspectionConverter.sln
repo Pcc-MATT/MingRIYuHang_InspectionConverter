@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MingRIYuHang_InspectionConverter", "MingRIYuHang_InspectionConverter\MingRIYuHang_InspectionConverter.csproj", "{9AEDFD59-A7D0-4CEB-A5E1-088EE1535338}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "calypsoInterface", "calypsoInterface\calypsoInterface.csproj", "{51216135-16B4-4949-A343-61793A704104}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9AEDFD59-A7D0-4CEB-A5E1-088EE1535338}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AEDFD59-A7D0-4CEB-A5E1-088EE1535338}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AEDFD59-A7D0-4CEB-A5E1-088EE1535338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51216135-16B4-4949-A343-61793A704104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51216135-16B4-4949-A343-61793A704104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51216135-16B4-4949-A343-61793A704104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51216135-16B4-4949-A343-61793A704104}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
