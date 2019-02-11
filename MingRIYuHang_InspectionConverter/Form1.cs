@@ -271,11 +271,14 @@ namespace MingRIYuHang_InspectionConverter
             dialog.Filter = "所有文件(*.txt*)|*.txt;*";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                string file = dialog.FileName;
-                textBox2.Text = file;
-                pointFilePath = file;
-                showMsg("选择点文件：" + file);
-                getPointFile();//
+                for (int i=0;i< dialog.FileNames.Count();i++)
+                {
+                    string file = dialog.FileNames[i];
+                    textBox2.Text += file.Split('\\')[file.Split('\\').Count() - 1].Substring(0, file.Split('\\')[file.Split('\\').Count() - 1].Count() - 4) + ";";
+                    pointFilePath = file;
+                    showMsg("选择点文件：" + file);
+                    getPointFile();//
+                }
             }
         }
         public void getPointFile()
@@ -612,10 +615,13 @@ namespace MingRIYuHang_InspectionConverter
             dialog.Filter = "所有文件(*.txt*)|*.txt;*";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                string file = dialog.FileName;
-                textBox3.Text = file;
-                showMsg("选择圆文件：" + file);
-                getCirclePointFile(file);//
+                for (int i = 0; i < dialog.FileNames.Count(); i++)
+                {
+                    string file = dialog.FileNames[i];
+                    textBox3.Text += file.Split('\\')[file.Split('\\').Count()-1].Substring(0, file.Split('\\')[file.Split('\\').Count() - 1].Count()-4)+";";
+                    showMsg("选择圆文件：" + file);
+                    getCirclePointFile(file);//
+                }
             }
         }
         //删除圆数据列表

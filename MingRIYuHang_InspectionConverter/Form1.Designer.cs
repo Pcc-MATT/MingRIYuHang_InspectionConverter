@@ -112,7 +112,6 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(589, 25);
             this.textBox2.TabIndex = 5;
-            this.textBox2.Text = "C:\\ZJQ\\00_Projects\\201810_明日宇航\\资料\\点\\点\\172A35044.W1B.txt";
             // 
             // label2
             // 
@@ -148,7 +147,6 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(528, 25);
             this.textBox3.TabIndex = 10;
-            this.textBox3.Text = "C:\\ZJQ\\00_Projects\\201810_明日宇航\\资料\\圆\\圆\\172A35044.PB.txt";
             // 
             // label4
             // 
