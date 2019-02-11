@@ -328,6 +328,43 @@ namespace MingRIYuHang_InspectionConverter
 
             inspectionFileAnalyse = new InspectionFileAnalyse();
             //dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.CellValueChanged += new DataGridViewCellEventHandler(dataGridView1_CellValueChanged);
+            dataGridView2.CellValueChanged += new DataGridViewCellEventHandler(dataGridView2_CellValueChanged);
+        }
+        //datagridview列表多选修改数据
+        void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var cell = dataGridView1[e.ColumnIndex, e.RowIndex];
+
+            foreach (DataGridViewCell item in dataGridView1.SelectedCells)
+            {
+                // 若不是同一列则不做修改
+                if (cell.ColumnIndex != item.ColumnIndex)
+                    continue;
+
+                // 若是自己则不做修改
+                if (cell == item)
+                    continue;
+
+                item.Value = cell.Value;
+            }
+        }
+        void dataGridView2_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var cell = dataGridView2[e.ColumnIndex, e.RowIndex];
+
+            foreach (DataGridViewCell item in dataGridView2.SelectedCells)
+            {
+                // 若不是同一列则不做修改
+                if (cell.ColumnIndex != item.ColumnIndex)
+                    continue;
+
+                // 若是自己则不做修改
+                if (cell == item)
+                    continue;
+
+                item.Value = cell.Value;
+            }
         }
         //显示操作信息和记录log
         private void showMsg(string msg)
