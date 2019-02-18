@@ -307,23 +307,27 @@ namespace MingRIYuHang_InspectionConverter
         private void Form1_Load(object sender, EventArgs e)
         {
             showMsg("软件启动开始");
-
-            #region 临时许可证
-            showMsg("验证临时许可证开始");
-            tempLicense();
-            StreamReader sr = new StreamReader(@"C:\ProgramData\Zeiss\SDCO\pd.dat");
-            string oldDate = sr.ReadToEnd();
-            sr.Close();
-            DateTime dtOLD = Convert.ToDateTime(oldDate);
-            DateTime currentDate = DateTime.Now;
-            TimeSpan timeSpan = currentDate - dtOLD;
-            if (timeSpan.TotalDays > 30)
+            LicenseActivation LA = new LicenseActivation();
+            LA.checkActivationState();
+            if (!LA.activationState)
             {
-                showMsg("临时许可证验证失败");
-                MessageBox.Show("试用版超期了！");
-                Application.Exit();
+                #region 临时许可证
+                showMsg("验证临时许可证开始");
+                tempLicense();
+                StreamReader sr = new StreamReader(@"C:\ProgramData\Zeiss\SDCO\pd.dat");
+                string oldDate = sr.ReadToEnd();
+                sr.Close();
+                DateTime dtOLD = Convert.ToDateTime(oldDate);
+                DateTime currentDate = DateTime.Now;
+                TimeSpan timeSpan = currentDate - dtOLD;
+                if (timeSpan.TotalDays > 30)
+                {
+                    showMsg("临时许可证验证失败");
+                    MessageBox.Show("试用版超期了！");
+                    Application.Exit();
+                }
+                showMsg("验证临时许可证完成");
             }
-            showMsg("验证临时许可证完成"); 
             #endregion
 
             inspectionFileAnalyse = new InspectionFileAnalyse();
@@ -710,6 +714,11 @@ namespace MingRIYuHang_InspectionConverter
         {
             LogViewer logViewer = new LogViewer();
             logViewer.ShowDialog();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
